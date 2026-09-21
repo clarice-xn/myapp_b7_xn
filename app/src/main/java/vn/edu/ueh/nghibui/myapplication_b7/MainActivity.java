@@ -2,7 +2,6 @@ package vn.edu.ueh.nghibui.myapplication_b7;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,14 +20,13 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnArtic
     private static final String STATE_ARTICLES = "state_articles";
 
     RecyclerView recyclerView;
-    Button btLoad;
     MyAdapter myAdapter;
     ArrayList<Article> articleList = new ArrayList<>();
 
     // Launcher mở DetailActivity và nhận kết quả trả về (registerForActivityResult như trong slide)
     ActivityResultLauncher<Intent> detailLauncher;
 
-
+    @SuppressWarnings({"unchecked", "deprecation"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +67,13 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnArtic
                     }
                 });
 
-        // 3. RecyclerView + nút Load
+        // 3. Tạo RecyclerView + Adapter + LayoutManager (như slide 04_5)
         recyclerView=findViewById(R.id.recyclerView);
+        myAdapter =new MyAdapter(this,articleList,this);
+        recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // đường kẻ giữa các bài
-
-        btLoad= findViewById(R.id.btLoad);
-        btLoad.setOnClickListener(v -> {
-            myAdapter =new MyAdapter(v.getContext(),articleList,this);
-            recyclerView.setAdapter(myAdapter);
-        });
     }
 
     /** Thêm thủ công vài bài viết mẫu khi chạy lần đầu (âm nhạc, đời sống, mẹo vặt). */
